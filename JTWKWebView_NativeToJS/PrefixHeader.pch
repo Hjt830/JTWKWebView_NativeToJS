@@ -1,0 +1,105 @@
+//
+//  PrefixHeader.pch
+//  JTWKWebView_NativeToJS
+//
+//  Created by 黄金台 on 2018/8/27.
+//  Copyright © 2018年 黄金台. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#if __OBJC__
+
+
+//LBXScan 如果需要使用LBXScanViewController控制器代码，那么下载了那些模块，请定义对应的宏
+#define LBXScan_Define_Native  //包含native库
+#define LBXScan_Define_ZXing   //包含ZXing库
+#define LBXScan_Define_ZBar    //包含ZBar库
+#define LBXScan_Define_UI      //包含界面库
+
+#import "WebViewJavascriptBridge.h"
+#import <AVFoundation/AVFoundation.h>
+#import <AMapLocationKit/AMapLocationKit.h>
+#import "LBXPermission.h"
+#import "Global.h"
+#import "StyleDIY.h"
+#import "LBXPermission.h"
+#import "SVProgressHUD.h"
+#import <ShareSDK/ShareSDK.h>
+#import <MapKit/MapKit.h>
+#import <ShareSDK/ShareSDK.h>
+//腾讯开放平台（对应QQ和QQ空间）SDK头文件
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+// 微信
+#import "WXApi.h"
+// 支付宝
+#import <AlipaySDK/AlipaySDK.h>
+// 微博
+#import "WeiboSDK.h"
+// ShareSDK
+#import <ShareSDK/ShareSDK.h>
+#import <ShareSDKConnector/ShareSDKConnector.h>
+#import "MJRefresh.h"
+#import "UIView+Size.h"
+
+
+/**
+ * 第三方库的key
+ */
+
+// 高德地图Apikey
+#define AMAPKEY @""
+
+// 微信AppID
+#define WXAppID @""
+#define WXAppSecret @""
+
+// 新浪微博AppID
+#define SinaAppKEY @""
+#define SinaAppSecret @""
+#define SinaHandleUrl @""
+
+// 腾讯QQ
+#define QQAppID @""
+#define QQAppKEY @""
+
+// ShareSDK
+#define ShareAppKEY @""
+#define ShareAppSecret @""
+
+// 获取应用名称
+#define JTAppName [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]
+
+/***
+ * 颜色
+ **/
+#define RGBACOLOR(r, g, b, a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
+
+/**
+ * 系统字体大小
+ */
+#define JTFont(f) [UIFont systemFontOfSize:f]
+
+/**
+ * 一些提示用语
+ */
+#define JTCameraAlertTitle @"请打开相机权限"
+#define JTCameraAlertMessage [NSString stringWithFormat:@"请你到 '设置' - '隐私' - '相机' - '%@' 打开相机服务", JTAppName]
+
+#define JTLocationAlertTitle @"请打开定位权限"
+#define JTLocationAlertMessage [NSString stringWithFormat:@"请你到 '设置' - '隐私' - '定位服务' - '%@' 选择打开定位服务", JTAppName]
+
+/***
+ * 宽高
+ **/
+#define KWidth ([UIScreen mainScreen].bounds.size.width)
+#define KHeight ([UIScreen mainScreen].bounds.size.height)
+
+#endif
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* PrefixHeader_pch */

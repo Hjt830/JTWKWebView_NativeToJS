@@ -1,0 +1,229 @@
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>
+        js调用OC
+    </title>
+</head>
+<body>
+    <p>
+    <input type="Text" value="iOS测试" style="width:640px;height:200px;font-size:65px"/>
+    </p>
+    <p>
+    <input type="button" value="1、扫一扫" onclick="scan()" style="width:640px;height:100px;font-size:50px"/>
+    </p>
+    <p>
+    <input type="button" value="2、分享" onclick="share()" style="width:640px;height:100px;font-size:50px"/>
+    </p>
+    <p>
+    <input type="button" value="3、微信登录" onclick="wxLogin()" style="width:640px;height:100px;font-size:50px"/>
+    </p>
+    <p>
+    <input type="button" value="4、QQ登录" onclick="qqLogin()" style="width:640px;height:100px;font-size:50px"/>
+    </p>
+    <p>
+    <input type="button" value="5、微博登录" onclick="wbLogin()" style="width:640px;height:100px;font-size:50px"/>
+    </p>
+    <p>
+    <input type="button" value="6、高德选点" onclick="choosePoi()" style="width:640px;height:100px;font-size:50px"/>
+    </p>
+    <p>
+    <input type="button" value="7、微信支付" onclick="wxPay()" style="width:640px;height:100px;font-size:50px"/>
+    </p>
+    <p>
+    <input type="button" value="8、支付宝支付" onclick="aliPay()" style="width:640px;height:100px;font-size:50px"/>
+    </p>
+    <p>
+    <input type="button" value="9、用户定位" onclick="startLocation()" style="width:640px;height:100px;font-size:50px"/>
+    </p>
+    <p>
+    <input type="button" value="10、复制文本" onclick="putTextIntoClip()" style="width:640px;height:100px;font-size:50px"/>
+    </p>
+    <p>
+    <input type="button" value="11、导航" onclick="openNavigation()" style="width:640px;height:100px;font-size:50px"/>
+    </p>
+    <p>
+    <input type="button" value="12、软件更新" onclick="updateApp()" style="width:640px;height:100px;font-size:50px"/>
+    </p>
+</body>
+<script>
+        /**
+         *  数据初始化
+         */
+        function connectWebViewJavascriptBridge(callback) {
+            if (window.WebViewJavascriptBridge) {
+                callback(WebViewJavascriptBridge)
+            } else {
+                document.addEventListener(
+                    'WebViewJavascriptBridgeReady'
+                    , function() {
+                        callback(WebViewJavascriptBridge)
+                    },
+                    false
+                );
+            }
+           }
+            /*
+             *初始化执行 ---- 这个不能少
+             *webView.send("123"); Java执行无回调函数
+             *webView.send("123", new CallBackFunction()  Java执行有回调函数
+             */
+            connectWebViewJavascriptBridge(function(bridge) {
+            bridge.init(function(message, responseCallback) {
+                 document.getElementById("init").innerHTML = message;
+                 responseCallback("js接受到数据，并且处理了。。。");
+            });
+            /*
+            这里是一些js函数的注册地方
+            */
+            bridge.registerHandler("functionFromJs", function(data, responseCallback) {
+                alert("来自iOS的数据"+data);
+                responseCallback("来自js的消息");
+            });
+        })
+        
+        /*这段代码是固定的，必须要放到js中*/
+        function setupWebViewJavascriptBridge(callback) {
+            if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+            if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+            window.WVJBCallbacks = [callback];
+            var WVJBIframe = document.createElement('iframe');
+            WVJBIframe.style.display = 'none';
+            WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+            document.documentElement.appendChild(WVJBIframe);
+            setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+        }
+
+        /*与OC交互的所有JS方法都要放在此处注册，才能调用通过JS调用OC或者让OC调用这里的JS*/
+        setupWebViewJavascriptBridge(function(bridge) {
+                                     
+            // 例如这里注册 testJSFunction 方法
+            bridge.registerHandler('testJSFunction', function(data, responseCallback) {
+                  alert('JS方法被调用:'+data);
+                  responseCallback('js执行过了');
+            })
+        })
+
+
+        // 1、扫一扫
+        function scan() {
+            window.WebViewJavascriptBridge.callHandler(
+                'scan'
+                ,{'Data': 'json数据传给iOS端'}  //该类型是任意类型
+                , function(responseData) {
+                    alert(responseData);
+                }
+            );
+        }
+        // 2、分享
+        function share() {
+            window.WebViewJavascriptBridge.callHandler(
+               'share'
+               , {'Data': 'json数据传给iOS端'}  //该类型是任意类型
+               , function(responseData) {
+                    alert(responseData);
+               }
+            );
+        }
+        // 3、微信登录
+        function wxLogin() {
+            window.WebViewJavascriptBridge.callHandler(
+               'wxLogin'
+               , {'Data': 'json数据传给iOS端'}  //该类型是任意类型
+               , function(responseData) {
+                   alert(responseData);
+               }
+            );
+        }
+        // 4、QQ登录
+        function wxLogin() {
+            window.WebViewJavascriptBridge.callHandler(
+                                                       'qqLogin'
+                                                       , {'Data': 'json数据传给iOS端'}  //该类型是任意类型
+                                                       , function(responseData) {
+                                                       alert(responseData);
+                                                       }
+                                                       );
+        }
+        // 5、微博登录
+        function wxLogin() {
+            window.WebViewJavascriptBridge.callHandler(
+                                                       'wbLogin'
+                                                       , {'Data': 'json数据传给iOS端'}  //该类型是任意类型
+                                                       , function(responseData) {
+                                                       alert(responseData);
+                                                       }
+                                                       );
+        }
+        // 6、高德选点
+        function choosePoi() {
+            window.WebViewJavascriptBridge.callHandler(
+               'choosePoi'
+               ,{'Data': 'json数据传给iOS端'}  //该类型是任意类型
+               , function(responseData) {
+               alert(responseData);
+               }
+               );
+        }
+        // 7、微信支付
+        function wxPay() {
+            window.WebViewJavascriptBridge.callHandler(
+               'wxPay'
+               , {'Data': 'json数据传给iOS端'}  //该类型是任意类型
+               , function(responseData) {
+               alert(responseData);
+               }
+               );
+        }
+        // 8、支付宝支付
+        function aliPay() {
+            window.WebViewJavascriptBridge.callHandler(
+               'aliPay'
+               ,{'Data': 'json数据传给iOS端'}  //该类型是任意类型
+               , function(responseData) {
+               alert(responseData);
+               }
+               );
+        }
+        // 9、用户定位
+        function startLocation() {
+            window.WebViewJavascriptBridge.callHandler(
+               'startLocation'
+               , {'Data': 'json数据传给iOS端'}  //该类型是任意类型
+               , function(responseData) {
+               alert(responseData);
+               }
+               );
+        }
+        // 10、复制文本
+        function putTextIntoClip() {
+            window.WebViewJavascriptBridge.callHandler(
+               'putTextIntoClip'
+               , {'Data': 'json数据传给iOS端'}  //该类型是任意类型
+               , function(responseData) {
+               alert(responseData);
+               }
+               );
+        }
+        // 11、导航
+        function openNavigation() {
+            window.WebViewJavascriptBridge.callHandler(
+               'openNavigation'
+               , {'Data': 'https://www.taobao.com'}  //该类型是任意类型
+               , function(responseData) {
+               alert(responseData);
+               }
+               );
+        }
+        // 12、软件更新
+        function updateApp() {
+            window.WebViewJavascriptBridge.callHandler(
+               'updateApp'
+               , {'Data': 'json数据传给iOS端'}  //该类型是任意类型
+               , function(responseData) {
+               alert(responseData);
+               }
+               );
+        }
+</script>
+</html>
